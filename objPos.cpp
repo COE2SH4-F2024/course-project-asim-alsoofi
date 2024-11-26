@@ -55,6 +55,7 @@ objPos &objPos::operator=(const objPos& other){
 }
 
 
+
 // The setter
 // Updates current object position and symbol by copying another objPos object
 // Can be used to move the snakes head to the position as another object
