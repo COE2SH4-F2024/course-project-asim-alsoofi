@@ -24,7 +24,9 @@ class objPos
         // Respect the rule of six / minimum four
         // [TODO] Implement the missing special member functions to meet the minimum four rule
         // Importnant for Pos *pos DMA
-
+        ~objPos(); // Destructor
+        objPos (const objPos& other);
+        objPos& operator=(const objPos& other);
 
         void setObjPos(objPos o);  // The Setter     
         void setObjPos(int xPos, int yPos, char sym); //Set Position and symbol 
