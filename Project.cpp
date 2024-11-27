@@ -1,16 +1,19 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "player.h"
 
 using namespace std;
 
 #define DELAY_CONST 100000
 
-bool exitFlag;
+Player *myPlayer; // Global pointer for a player object on the heap
+GameMechs *myGM;
 
-objPos currentPos(5, 5, '*');  // Snake's head at position (5, 5) with symbol '*'
+
 objPos food[5];                // Array to hold up to 5 food items
 int foodCount = 2;             // Track how many food items are in the food array
+ 
 
 void Initialize(void);
 void GetInput(void);
@@ -26,11 +29,11 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while(myGM -> getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
-        DrawScreen();
+        DrawScreen(); 
         LoopDelay();
     }
 
@@ -43,9 +46,12 @@ void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
+
+    myGM = new GameMechs();
+    myPlayer = new Player(myGM);
+
     food[0] = objPos(10, 3, '@');  // Food at (10, 3) with symbol '@'
     food[1] = objPos(7, 7, '@');   // Another food at (7, 7)
-    exitFlag = false;
 }
 
 void GetInput(void)
@@ -59,8 +65,10 @@ void RunLogic(void)
 }
 
 void DrawScreen(void){
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();   
     int i, j;
+
+    objPos playerPos = myPlayer -> getPlayerPos();
     
     // Loops through the rows
     for(i = 0; i < 10; i++){
@@ -74,8 +82,8 @@ void DrawScreen(void){
                 if (j == 0 || j == 19) {
                     MacUILib_printf("#");
                 }
-                else if (i == currentPos.getObjPos().pos-> y && j == currentPos.getObjPos().pos -> x) {
-                    MacUILib_printf("%c", currentPos.getSymbol());
+                else if (i == playerPos.pos-> y && j == playerPos.pos -> x) {
+                    MacUILib_printf("%c", playerPos.getSymbol());
                 }
                 else {
                     bool objectFound = false;
@@ -109,6 +117,8 @@ void CleanUp(void)
     MacUILib_clearScreen();    
     // delete stuff
 
+    delete myPlayer;
+    delete myGM;
 
     MacUILib_uninit();
 }
