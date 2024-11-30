@@ -5,10 +5,9 @@ Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
     direction = STOP;
-    
 
     // more actions to be included
-    objPos playerPos(mainGameMechsRef -> getBoardSizeX() / 2, mainGameMechsRef -> getBoardSizeY() / 2,'@');
+    playerPos = objPos(mainGameMechsRef -> getBoardSizeX() / 2, mainGameMechsRef -> getBoardSizeY() / 2,'@');
 }
 
 
@@ -65,7 +64,7 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
-        if (direction == UP){
+    if (direction == UP){
         playerPos.pos->y -= 1;
         if (playerPos.pos->y == 0){
             playerPos.pos->y = 8;
