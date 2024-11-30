@@ -50,18 +50,26 @@ void Initialize(void)
     myGM = new GameMechs();
     myPlayer = new Player(myGM);
 
-    food[0] = objPos(10, 3, '@');  // Food at (10, 3) with symbol '@'
-    food[1] = objPos(7, 7, '@');   // Another food at (7, 7)
+    food[0] = objPos(10, 3, 'o');  // Food at (10, 3) with symbol '@'
+    food[1] = objPos(7, 7, 'o');   // Another food at (7, 7)
 }
 
 void GetInput(void)
 {
-   
+  myGM->setInput(myGM->getInput());
 }
 
 void RunLogic(void)
 {
-    
+    if(myGM->getInput() != 0)
+    {
+        if(myGM->getInput() == ' '){ 
+            myGM->setExitTrue();
+        }
+        myPlayer->updatePlayerDir();
+        myGM->clearInput();
+    }
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void){

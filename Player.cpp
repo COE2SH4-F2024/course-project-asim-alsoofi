@@ -65,6 +65,30 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
+        if (direction == UP){
+        playerPos.pos->y -= 1;
+        if (playerPos.pos->y == 0){
+            playerPos.pos->y = 8;
+        }
+    }
+    else if (direction == DOWN){
+        playerPos.pos->y += 1;
+        if (playerPos.pos->y == 9){
+            playerPos.pos->y = 1;
+        }
+    }
+    else if (direction == LEFT){
+        playerPos.pos->x -= 1;
+        if (playerPos.pos->x == 0){
+            playerPos.pos->x = 18;
+        }
+    }
+    else if (direction == RIGHT){
+        playerPos.pos->x += 1;
+        if (playerPos.pos->x == 19){
+            playerPos.pos->x = 1;
+        }
+    }
 }
 
 // More methods to be added
