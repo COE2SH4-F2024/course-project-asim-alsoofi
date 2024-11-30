@@ -55,12 +55,20 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   
+  myGM->setInput(myGM->getInput());
 }
 
 void RunLogic(void)
 {
-    
+    if(myGM->getInput() != 0)
+    {
+        if(myGM->getInput() == ' '){ 
+            myGM->setExitTrue();
+        }
+        myPlayer->updatePlayerDir();
+        myGM->clearInput();
+    }
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void){
