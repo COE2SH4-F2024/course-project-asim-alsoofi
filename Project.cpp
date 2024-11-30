@@ -2,6 +2,7 @@
 #include "MacUILib.h"
 #include "objPos.h"
 #include "player.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -9,11 +10,9 @@ using namespace std;
 
 Player *myPlayer; // Global pointer for a player object on the heap
 GameMechs *myGM;
+Food *food;
 
 
-objPos food[5];                // Array to hold up to 5 food items
-int foodCount = 2;             // Track how many food items are in the food array
- 
 
 void Initialize(void);
 void GetInput(void);
@@ -50,8 +49,8 @@ void Initialize(void)
     myGM = new GameMechs();
     myPlayer = new Player(myGM);
 
-    food[0] = objPos(10, 3, '@');  // Food at (10, 3) with symbol '@'
-    food[1] = objPos(7, 7, '@');   // Another food at (7, 7)
+    food = new Food();
+    food ->generateFood(myPlayer -> getPlayerPos());
 }
 
 void GetInput(void)
@@ -69,7 +68,8 @@ void DrawScreen(void){
     int i, j;
 
     objPos playerPos = myPlayer -> getPlayerPos();
-    
+    objPos foodPos = food -> getFoodPos();
+
     // Loops through the rows
     for(i = 0; i < 10; i++){
         // Loops through the columns
@@ -90,8 +90,8 @@ void DrawScreen(void){
                     
                     // for the food
                     for(int k = 0; k < 5; k++){
-                        if (food[k].getObjPos().pos-> x == j && food[k].getObjPos().pos-> y == i) {
-                            MacUILib_printf("%c", food[k].getSymbol());
+                        if (foodPos.pos-> x == j && foodPos.pos-> y == i) {
+                            MacUILib_printf("%c", foodPos.symbol);
                             objectFound = true;
                             break;                        
                         }
@@ -119,6 +119,7 @@ void CleanUp(void)
 
     delete myPlayer;
     delete myGM;
+    delete food;
 
     MacUILib_uninit();
 }
