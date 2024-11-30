@@ -75,7 +75,9 @@ void DrawScreen(void){
     MacUILib_clearScreen();   
     int i, j;
 
-    objPos playerPos = myPlayer -> getPlayerPos();
+    objPosArrayList* playerPos = myPlayer -> getPlayerPos();
+    int playerSize = playerPos->getSize();
+    
     objPos foodPos = food -> getFoodPos();
 
     // Loops through the rows
