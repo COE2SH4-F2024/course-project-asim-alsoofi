@@ -66,31 +66,34 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    objPos head = playerPosList->getHeadElement();
     // PPA3 Finite State Machine logic
     if (direction == UP){
-        playerPos.pos->y -= 1;
-        if (playerPos.pos->y == 0){
-            playerPos.pos->y = 8;
+        head.pos->y -= 1;
+        if (head.pos->y == 0){
+            head.pos->y = 8;
         }
     }
     else if (direction == DOWN){
-        playerPos.pos->y += 1;
-        if (playerPos.pos->y == 9){
-            playerPos.pos->y = 1;
+        head.pos->y += 1;
+        if (head.pos->y == 9){
+            head.pos->y = 1;
         }
     }
     else if (direction == LEFT){
-        playerPos.pos->x -= 1;
-        if (playerPos.pos->x == 0){
-            playerPos.pos->x = 18;
+        head.pos->x -= 1;
+        if (head.pos->x == 0){
+            head.pos->x = 18;
         }
     }
     else if (direction == RIGHT){
-        playerPos.pos->x += 1;
-        if (playerPos.pos->x == 19){
-            playerPos.pos->x = 1;
+        head.pos->x += 1;
+        if (head.pos->x == 19){
+            head.pos->x = 1;
         }
     }
+
+    playerPosList->insertHead(head);
 }
 
 // More methods to be added

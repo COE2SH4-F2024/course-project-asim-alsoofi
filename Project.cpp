@@ -50,7 +50,7 @@ void Initialize(void)
     myPlayer = new Player(myGM);
 
     food = new Food();
-    food ->generateFood(myPlayer -> getPlayerPos());
+    //food ->generateFood(myPlayer -> getPlayerPos());
 }
 
 void GetInput(void)
@@ -74,46 +74,53 @@ void RunLogic(void)
 void DrawScreen(void){
     MacUILib_clearScreen();   
     int i, j;
+    bool objectFound;
 
-    objPosArrayList* playerPos = myPlayer -> getPlayerPos();
-    int playerSize = playerPos->getSize();
+    objPosArrayList* playerPosList = myPlayer -> getPlayerPos();
+    objPos playerHead = playerPosList->getHeadElement();
+    int playerSize = playerPosList->getSize();
+    int BoardX = myGM->getBoardSizeX();
+    int BoardY = myGM->getBoardSizeY();
     
     objPos foodPos = food -> getFoodPos();
 
-    // Loops through the rows
-    for(i = 0; i < 10; i++){
-        // Loops through the columns
-        for(j = 0; j < 20; j++){
-            // Drawing Top and bottom border
-            if(i == 0 || i == 9) {
+    for(i = 0; i <= BoardY; i++)
+    {
+        for(j = 0; j <= BoardX; j++)
+        {
+            objectFound = false;
+            for(int k = 0; k < playerSize; k++){
+                objPos thisSeg = playerPosList->getElement(k);
+                if(i == thisSeg.pos -> y && j == thisSeg.pos -> x){
+                    MacUILib_printf("%c", thisSeg.symbol);
+                    objectFound = true;
+                    break;
+                }
+            }
+
+            //food implementation
+
+            if(objectFound){
+                continue;
+            }
+            else if(i == 0 || j == 0 || j == BoardX || i == BoardY){
                 MacUILib_printf("#");
             }
-            else {
-                if (j == 0 || j == 19) {
-                    MacUILib_printf("#");
-                }
-                else if (i == playerPos.pos-> y && j == playerPos.pos -> x) {
-                    MacUILib_printf("%c", playerPos.getSymbol());
-                }
-                else {
-                    bool objectFound = false;
-                    
-                    // for the food
-                    for(int k = 0; k < 5; k++){
-                        if (foodPos.pos-> x == j && foodPos.pos-> y == i) {
-                            MacUILib_printf("%c", foodPos.symbol);
-                            objectFound = true;
-                            break;                        
-                        }
-                    }
-                    if(!objectFound) {
-                        MacUILib_printf(" ");
-                    }
-                }
+            else{
+               MacUILib_printf(" "); 
             }
         }
         MacUILib_printf("\n");
     }
+         
+                    // // for the food
+                    // for(int k = 0; k < 5; k++){
+                    //     if (foodPos.pos-> x == j && foodPos.pos-> y == i) {
+                    //         MacUILib_printf("%c", foodPos.symbol);
+                    //         objectFound = true;
+                    //         break;                        
+                    //     }
+                    // }
 }
 
 void LoopDelay(void)
