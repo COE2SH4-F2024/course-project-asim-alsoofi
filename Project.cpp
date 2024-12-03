@@ -1,8 +1,9 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
-#include "player.h"
+#include "Player.h"
 #include "Food.h"
+#include "GameMechs.h"
 
 using namespace std;
 
@@ -11,7 +12,6 @@ using namespace std;
 Player *myPlayer; // Global pointer for a player object on the heap
 GameMechs *myGM;
 Food *food;
-
 
 
 void Initialize(void);
@@ -47,10 +47,11 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs();
-    myPlayer = new Player(myGM);
+    food = new Food(myGM);
+    myPlayer = new Player(myGM, food);
 
-    food = new Food();
-    //food ->generateFood(myPlayer -> getPlayerPos());
+    
+    food ->generateFood(*myPlayer -> getPlayerPos());
 }
 
 void GetInput(void)
@@ -84,6 +85,8 @@ void DrawScreen(void){
     
     objPos foodPos = food -> getFoodPos();
 
+    MacUILib_printf("Welcome to the snake game!\nRules are simple:\n- Don't collide with the border \n- Don't bite your own tail (or body)\n- Eat the food (x) and get the highest possible score!");
+    MacUILib_printf("\nSettings: Up - w/W, Down - s/S, Left - a/A, Right - d/D, Quit - Spacebar\n");
     for(i = 0; i <= BoardY; i++)
     {
         for(j = 0; j <= BoardX; j++)
@@ -97,8 +100,11 @@ void DrawScreen(void){
                     break;
                 }
             }
-
             //food implementation
+            if(!objectFound && i == foodPos.pos -> y && j == foodPos.pos-> x){
+                MacUILib_printf("%c", foodPos.symbol);
+                objectFound = true;
+            }
 
             if(objectFound){
                 continue;
@@ -112,15 +118,8 @@ void DrawScreen(void){
         }
         MacUILib_printf("\n");
     }
-         
-                    // // for the food
-                    // for(int k = 0; k < 5; k++){
-                    //     if (foodPos.pos-> x == j && foodPos.pos-> y == i) {
-                    //         MacUILib_printf("%c", foodPos.symbol);
-                    //         objectFound = true;
-                    //         break;                        
-                    //     }
-                    // }
+    MacUILib_printf("Score: %d", myGM -> getScore());
+    
 }
 
 void LoopDelay(void)
@@ -132,8 +131,6 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-    // delete stuff
-
     delete myPlayer;
     delete myGM;
     delete food;

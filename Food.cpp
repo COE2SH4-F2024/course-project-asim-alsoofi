@@ -1,42 +1,54 @@
 #include "Food.h"
 #include <cstdlib>  // For rand()
 #include <ctime>    // For time()
-#include <cstdlib>  // For rand()
-#include <ctime>    // For time()
+
+
+
 // Constructor: Initialize food position and symbol
-Food::Food() {
-    foodPos.pos->x = 2;           // Default x position
-    foodPos.pos->y = 2;           // Default y position
-    foodPos.symbol = 'o';    // Default symbol for food
+Food::Food(GameMechs* thisGMRef): gameMechsRef(thisGMRef) {
+    foodPos.pos->x = 0;           // Default x position
+    foodPos.pos->y = 0;           // Default y position
+    foodPos.symbol = 'x';    // Default symbol for food
     srand(time(nullptr));    // Seed the random number generator
 }
 
 // Destructor: If there's any dynamic memory, free it here (not necessary for this case)
-Food::~Food() {}
+Food::~Food() {
+
+}
 
 // Generate a random position for food, avoiding the player's position
-void Food::generateFood(objPos blockOff) {
+void Food::generateFood(objPosArrayList& blockOff) {
     int x, y;
-    char symbol = 'o';  // Food symbol
+    char symbol = 'x';  // Food symbol
     bool unique = false;
 
+    int boardX = gameMechsRef->getBoardSizeX() - 2;
+    int boardY = gameMechsRef->getBoardSizeY() - 2;
+
     while (!unique) {
-        unique = true;
 
         // Randomly generate x and y within bounds
-        x = rand() % (20 - 2) + 1;  // x range [1, 18]
-        y = rand() % (10 - 2) + 1;  // y range [1, 8]
+        x = rand() % (boardX - 1) + 1;  // x range [1, 18]
+        y = rand() % (boardY - 1) + 1;  // y range [1, 8]
 
         // Ensure the food doesn't overlap with the player (blockOff position)
-        if (x == blockOff.pos->x && y == blockOff.pos->y) {
-            unique = false;
-            continue;
+        unique = true;
+
+        for (int i = 0; i <blockOff.getSize(); i++){    
+            objPos snakeSegment = blockOff.getElement(i);
+            if (x == snakeSegment.pos->x && y == snakeSegment.pos->y) {
+                unique = false;
+                break;
+            }
         }
 
         // If the position is unique, set the food's position
-        foodPos.pos->x = x;
-        foodPos.pos->y = y;
-        foodPos.symbol = symbol;
+        if(unique){
+            foodPos.pos->x = x;
+            foodPos.pos->y = y;
+            foodPos.symbol = symbol;
+        }
     }
 }
 
