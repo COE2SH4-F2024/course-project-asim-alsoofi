@@ -17,9 +17,9 @@ objPos::objPos()
 objPos::objPos(int xPos, int yPos, char sym)
 {
     pos = new Pos;
-    pos->x = xPos;
-    pos->y = yPos;
-    symbol = sym;
+    pos->x = xPos; // Sets the x-coordinate to the provided value
+    pos->y = yPos; // Sets the y-coordinate to the provided value
+    symbol = sym; // Sets the symbol to the provided character
 }
 
 // Respect the rule of six / minimum four
@@ -28,28 +28,28 @@ objPos::objPos(int xPos, int yPos, char sym)
 // Iteration 0
 // The destructor
 objPos::~objPos(){
-    delete pos;
+    delete pos; // Frees the memory allocated
 }
 
 // Copy Constructor
 objPos::objPos (const objPos& other){
-    pos = new Pos; // Memory Alloicate
-    pos -> x = other.pos -> x;
-    pos -> y = other.pos -> y;
-    symbol = other.symbol;    
+    pos = new Pos; // Memory Allocate
+    pos -> x = other.pos -> x; // Copies x
+    pos -> y = other.pos -> y; // Copies y
+    symbol = other.symbol; // Copies the symbol from the source object
 }
 
 // Copy Assignment operator (Deep Copy)
 objPos &objPos::operator=(const objPos& other){
-    if(this == &other){
-        return *this;
+    if(this == &other){ // Checks for self-assignment
+        return *this; // Returns the current object if self-assignment is detected
     }
     else{
         delete pos;
         pos = new Pos; // Memory Alloicate
-        pos -> x = other.pos -> x;
-        pos -> y = other.pos -> y;
-        symbol = other.symbol;    
+        pos -> x = other.pos -> x; // Copies x
+        pos -> y = other.pos -> y; // Copies y
+        symbol = other.symbol;  // Copies the symbol from the source object  
     }
     return *this;
 }
