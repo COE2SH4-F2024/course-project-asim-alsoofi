@@ -119,6 +119,17 @@ void DrawScreen(void){
         MacUILib_printf("\n");
     }
     MacUILib_printf("Score: %d", myGM -> getScore());
+
+    if(myGM -> getExitFlagStatus()){
+        MacUILib_clearScreen();
+        if(myGM -> getLoseFlagStatus()){    
+        MacUILib_printf("\nYou bit your own tail Game Over :(\nScore: %d", myGM -> getScore());
+    }  
+        else{
+            MacUILib_printf("You are quitting:( Why???\nScore: %d", myGM -> getScore());
+        } 
+    }
+    
     
 }
 
@@ -130,7 +141,6 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
     delete myPlayer;
     delete myGM;
     delete food;
